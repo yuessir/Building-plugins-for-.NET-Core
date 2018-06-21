@@ -11,19 +11,21 @@ namespace WebApiWithPlugins.Biz.Test
        
         public ICalculator _ucenterService;
         public IServiceProvider _serviceProvider;
+        public int serviceCount;
         public UnitTest1()
         {
             IServiceCollection services = new ServiceCollection();
           
             services.AddSingleton<ICalculatorProvider, CalculatorProvider>();
             services.AddCalculators();
+            serviceCount = services.Count;
             _serviceProvider = services.BuildServiceProvider();
 
         }
         [TestMethod]
         public void TestMethod1()
         {
-
+            Assert.AreEqual(serviceCount,3);
             Assert.IsNotNull(_serviceProvider);
             _ucenterService = _serviceProvider.GetService<DummyCalculator>();
             Assert.IsInstanceOfType(_ucenterService, typeof(DummyCalculator));
